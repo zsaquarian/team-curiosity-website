@@ -78,7 +78,7 @@
     </AccordionItem>
   </Accordion>
   <div class="absolute bottom-2 right-2">
-    <p>By Sohan</p>
+    <p>By Team Curiosity</p>
     <a href="https://github.com/zsaquarian/">Github</a>
   </div>
 </main>

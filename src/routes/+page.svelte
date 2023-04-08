@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { Accordion, AccordionItem, CodeBlock, Table, tableMapperValues, type TableSource } from '@skeletonlabs/skeleton'
+  import Introduction from '$lib/Introduction.svelte';
+	import Software from '$lib/Software.svelte';
+import { Accordion, AccordionItem, CodeBlock, Tab, TabGroup, Table, tableMapperValues, type TableSource } from '@skeletonlabs/skeleton'
 
   const sourceData = [
     { position: 1, name: 'Arduino Nano', use: 'Name of microcontroller is ATmega328, Architecture is AVR. Operating voltage 5v. flash memory is 32k KB form which 2 KB is occupied by the bootloader. Clock speed of the processor is 16MHz. number of analog in pins is 8, number of digital I/o pins 22 (6 of which are PWM support, PWM is pulse width modulation it is a powerful technique for controlling analog circuits with a microcontroller’s digital outputs used to control brightness of lights) dc current per io pin is 40mA and total power consumption is 19mA.'},
@@ -15,68 +17,29 @@
     head: ['Name', 'Use'],
     body: tableMapperValues(sourceData, ['name', 'use'])
   }
+
+  let tabSet = 0;
 </script>
 
 <main>
   <h1 class="text-center bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone m-2">Team Curiosity</h1>
-  <Accordion>
-    <AccordionItem>
-      <svelte:fragment slot="summary">Introduction</svelte:fragment>
-      <svelte:fragment slot="content">The line following car is a car that follows a black line on white surface. The basic concept of the line following car is that the line is detected using Infra-red sensor and according to the signal received from the sensors, microcontroller decides what movement should follow the car. This line following car uses infra-red sensor that out puts a analog signal according to the light intensity fall on it. Here black surface absorbs light more than the white surface, this is the basic theory of detecting the black line. The states of the photo transitors captured by the comparator and it produce 1 or 0 for the recieving signal. According to the signals recieved by microcontroller(Arduino Nano) is controling the car. For turning the car a certain direction the opposite motor is turned off to allow a turn i.e if the car has to make a left turn the right motor is turned off.</svelte:fragment>
-    </AccordionItem>
-    <AccordionItem>
-      <svelte:fragment slot="summary">Hardware</svelte:fragment>
-      <svelte:fragment slot="content">
+  <TabGroup>
+    <Tab bind:group={tabSet} name="intro" value={0}>Introduction</Tab>
+    <Tab bind:group={tabSet} name="hardware" value={1}>Hardware</Tab>
+    <Tab bind:group={tabSet} name="software" value={2}>Software</Tab>
+    <Tab bind:group={tabSet} name="software" value={3}>Simulation</Tab>
+    <svelte:fragment slot="panel">
+      {#if tabSet === 0}
+        <Introduction />
+      {:else if tabSet === 1}
         <Table source={table} />
-      </svelte:fragment>
-    </AccordionItem>
-    <AccordionItem>
-      <svelte:fragment slot="summary">Software</svelte:fragment>
-      <svelte:fragment slot="content">
-        We are defining all our inputs and outputs
-        <CodeBlock language="arduino" code={`#define LftSensr  3
-#define RghtSensr 4
-
-#define LftMotrMvmnt_1   9
-#define RghtMotrMvmnt_1  7
-
-#define LftMotrMvmnt_2  6
-#define RghtMotrMvmnt_2 8`}
-        />
-        Starting serial monitor, setting pin modes for inputs and outputs
-        <CodeBlock language="arduino" code={`void setup() {
-  Serial.begin(9600);
-
-  //IR sensor input
-  pinMode(LftSensr,  INPUT);
-  pinMode(RghtSensr, INPUT);
-  //Motor 1
-  pinMode(LftMotrMvmnt_1,  OUTPUT);
-  pinMode(RghtMotrMvmnt_1, OUTPUT);
-  // Motor 2
-  pinMode(LftMotrMvmnt_2,  OUTPUT);
-  pinMode(RghtMotrMvmnt_2, OUTPUT);
-
-  Serial.println("setup done");
-}`} 
-        />
-          We are storing the values we receive form the sensor into a variable of character data type. The values of the sensor can be of two numbers 1 or 0, In an IR sensor 0 is for object detected and 1 is for object not detected. We found this by printing the values of the sensor in serial monitor(//Console Logs For Debugging).
-        <CodeBlock language="arduino" code={`void loop() {
-  char LftSnsr, RghtSnsr;
-
-  /* read sensor values /
-  LeftSnsr  = digitalRead(LftSnsr);
-  RghtSnsr = digitalRead(RghtSnsr);`}
-        />
-      </svelte:fragment>
-    </AccordionItem>
-    <AccordionItem>
-      <svelte:fragment slot="summary">Simulation</svelte:fragment>
-      <svelte:fragment slot="content">
+      {:else if tabSet === 2}
+        <Software />
+      {:else if tabSet === 3}
         <iframe src="https://editor.p5js.org/zsaquarian/full/HwMyEBwC5" title="Simulation" class="mx-auto w-full h-96 lg:w-[90rem] lg:h-[45rem]"></iframe>
-      </svelte:fragment>
-    </AccordionItem>
-  </Accordion>
+      {/if}
+    </svelte:fragment>
+  </TabGroup>
   <div class="absolute bottom-2 right-2">
     <p>By Team Curiosity</p>
     <a href="https://github.com/zsaquarian/">Github</a>

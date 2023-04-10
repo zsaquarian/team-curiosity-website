@@ -17,4 +17,4 @@
   }
 </script>
 
-  <Table source={table} />
+<Table source={table} />

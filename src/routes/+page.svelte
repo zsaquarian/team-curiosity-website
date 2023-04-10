@@ -60,7 +60,7 @@
     </TabGroup>
   </svelte:fragment>
     <slot>
-    <div class="lg:w-1/2 m-10 lg:mx-auto">
+    <div class="lg:w-1/2 m-10 lg:mx-auto text-blue-300">
         {#if tabSet === 0}
           <Introduction />
         {:else if tabSet === 1}

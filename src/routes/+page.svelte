@@ -8,6 +8,10 @@
   let tabSet = 0;
 </script>
 
+<svelte:head>
+  <title>Team Curiosity - TechRadiance IIT Hyderabad</title>
+</svelte:head>
+  
 <Drawer>
     <TabGroup class="m-2"  justify="justify-center flex-col text-orange-300">
       <Tab bind:group={tabSet} name="intro" value={0}>Introduction</Tab>

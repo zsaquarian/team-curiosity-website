@@ -4,8 +4,7 @@
   import Introduction from '$lib/Introduction.svelte';
 	import Software from '$lib/Software.svelte';
   import { AppBar, AppShell, Drawer, Tab, TabGroup, drawerStore } from '@skeletonlabs/skeleton'
-
-  let tabSet = 0;
+  import { location } from '$lib/location';
 </script>
 
 <svelte:head>
@@ -14,11 +13,11 @@
   
 <Drawer>
     <TabGroup class="m-2"  justify="justify-center flex-col text-orange-300">
-      <Tab bind:group={tabSet} name="intro" value={0}>Introduction</Tab>
-      <Tab bind:group={tabSet} name="hardware" value={1}>Hardware</Tab>
-      <Tab bind:group={tabSet} name="software" value={2}>Software</Tab>
-      <Tab bind:group={tabSet} name="simulation" value={3}>Simulation</Tab>
-      <Tab bind:group={tabSet} name="bibliography" value={4}>Bibliography</Tab>
+      <Tab bind:group={$location} name="intro" value={0}>Introduction</Tab>
+      <Tab bind:group={$location} name="hardware" value={1}>Hardware</Tab>
+      <Tab bind:group={$location} name="software" value={2}>Software</Tab>
+      <Tab bind:group={$location} name="simulation" value={3}>Simulation</Tab>
+      <Tab bind:group={$location} name="bibliography" value={4}>Bibliography</Tab>
     </TabGroup>
     <div class="absolute bottom-4 left-4">
       <p class="text-orange-300">By Team Curiosity</p>
@@ -52,24 +51,24 @@
   </svelte:fragment>
   <svelte:fragment slot="pageHeader">
     <TabGroup class="m-2"  justify="justify-center text-orange-300">
-      <Tab bind:group={tabSet} name="intro" value={0}>Introduction</Tab>
-      <Tab bind:group={tabSet} name="hardware" value={1}>Hardware</Tab>
-      <Tab bind:group={tabSet} name="software" value={2}>Software</Tab>
-      <Tab bind:group={tabSet} name="simulation" value={3}>Simulation</Tab>
-      <Tab bind:group={tabSet} name="bibliography" value={4}>Bibliography</Tab>
+      <Tab bind:group={$location} name="intro" value={0}>Introduction</Tab>
+      <Tab bind:group={$location} name="hardware" value={1}>Hardware</Tab>
+      <Tab bind:group={$location} name="software" value={2}>Software</Tab>
+      <Tab bind:group={$location} name="simulation" value={3}>Simulation</Tab>
+      <Tab bind:group={$location} name="bibliography" value={4}>Bibliography</Tab>
     </TabGroup>
   </svelte:fragment>
     <slot>
     <div class="lg:w-1/2 m-10 lg:mx-auto text-blue-300">
-        {#if tabSet === 0}
+        {#if $location === 0}
           <Introduction />
-        {:else if tabSet === 1}
+        {:else if $location === 1}
           <Hardware />
-        {:else if tabSet === 2}
+        {:else if $location === 2}
           <Software />
-        {:else if tabSet === 3}
+        {:else if $location === 3}
           <iframe src="https://editor.p5js.org/zsaquarian/full/HwMyEBwC5" title="Simulation" class="mx-auto w-full h-[40rem]"></iframe>
-        {:else if tabSet === 4}
+        {:else if $location === 4}
           <Bibliography />
         {/if}
         <div>

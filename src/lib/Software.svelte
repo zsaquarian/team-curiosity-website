@@ -2,38 +2,62 @@
   import { CodeBlock } from '@skeletonlabs/skeleton';
 </script>
 
-        We are defining all our inputs and outputs
-        <CodeBlock language="arduino" code={`#define LftSensr  3
-#define RghtSensr 4
+<CodeBlock language="arduino" code={`
+// these are our pins
+const int IRL = 3;
+const int IRR = 4;
+const int L1 = 5;
+const int L2 = 6;
+const int R1 = 7;
+const int R2 = 8;
+const int ENL = 9;
+const int ENR = 10;
+const int SPEED = 700;
 
-#define LftMotrMvmnt_1   9
-#define RghtMotrMvmnt_1  7
+void setup() {
+  pinMode(IRL, INPUT);
+  pinMode(IRR, INPUT);
 
-#define LftMotrMvmnt_2  6
-#define RghtMotrMvmnt_2 8`}
-        />
-        Starting serial monitor, setting pin modes for inputs and outputs
-        <CodeBlock language="arduino" code={`void setup() {
+  pinMode(L1, OUTPUT);
+  pinMode(L2, OUTPUT);
+
+  pinMode(R1, OUTPUT);
+  pinMode(R2, OUTPUT);
+
+  pinMode(ENL, OUTPUT);
+  pinMode(ENR, OUTPUT);
+
+  // we can use Serial for debugging output
   Serial.begin(9600);
+}
 
-  //IR sensor input
-  pinMode(LftSensr,  INPUT);
-  pinMode(RghtSensr, INPUT);
-  //Motor 1
-  pinMode(LftMotrMvmnt_1,  OUTPUT);
-  pinMode(RghtMotrMvmnt_1, OUTPUT);
-  // Motor 2
-  pinMode(LftMotrMvmnt_2,  OUTPUT);
-  pinMode(RghtMotrMvmnt_2, OUTPUT);
+void loop() {
+  bool left = digitalRead(IRL);
+  bool right = digitalRead(IRR);
 
-  Serial.println("setup done");
-}`} 
-        />
-          We are storing the values we receive form the sensor into a variable of character data type. The values of the sensor can be of two numbers 1 or 0, In an IR sensor 0 is for object detected and 1 is for object not detected. We found this by printing the values of the sensor in serial monitor(//Console Logs For Debugging).
-        <CodeBlock language="arduino" code={`void loop() {
-  char LftSnsr, RghtSnsr;
+  // if there is an intersection, both IR sensors will detect black and the robot should just move forward
+  // else, the robot should move in the direction where there is black
+  // | IR Left | IR Right | Left Motor | Right Motor |
+  // | ------- | -------- | ---------- | ----------- |
+  // | 1       | 1        | Forward    | Forward     |
+  // | 0       | 1        | Forward    | Backward    |
+  // | 1       | 0        | Backward   | Forward     |
+  if (left && right) {
+    digitalWrite(L1, !left);
+    digitalWrite(L2, left);
 
-  /* read sensor values /
-  LeftSnsr  = digitalRead(LftSnsr);
-  RghtSnsr = digitalRead(RghtSnsr);`}
-        />
+    digitalWrite(R1, !right);
+    digitalWrite(R2, right);
+  } else {
+    digitalWrite(L1, left);
+    digitalWrite(L2, !left);
+
+    digitalWrite(R1, right);
+    digitalWrite(R2, !right);
+  }
+
+  // change the speed of the motors according to the SPEED constant, using the enable pins
+  analogWrite(ENL, SPEED);
+  analogWrite(ENR, SPEED);
+}
+`} />

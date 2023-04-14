@@ -5,6 +5,7 @@
 	import Software from '$lib/Software.svelte';
   import { AppBar, AppShell, Drawer, Tab, TabGroup, drawerStore } from '@skeletonlabs/skeleton'
   import { location } from '$lib/location';
+	import Simulation from '$lib/Simulation.svelte';
 </script>
 
 <svelte:head>
@@ -67,7 +68,7 @@
         {:else if $location === 2}
           <Software />
         {:else if $location === 3}
-          <iframe src="https://editor.p5js.org/zsaquarian/full/HwMyEBwC5" title="Simulation" class="mx-auto w-full h-[40rem]"></iframe>
+          <Simulation />
         {:else if $location === 4}
           <Bibliography />
         {/if}
